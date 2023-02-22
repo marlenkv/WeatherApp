@@ -3,16 +3,16 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_weatherapp/cubit/weather_app_cubit.dart';
-import 'package:flutter_weatherapp/firstScreen.dart';
-import 'package:flutter_weatherapp/helpers/color_helper.dart';
-import 'package:flutter_weatherapp/helpers/error_helper.dart';
-import 'package:flutter_weatherapp/helpers/text_helper.dart';
+
+import 'package:flutter_weatherapp/features/weathers/pressention/screens/firstScreen.dart';
+import 'package:flutter_weatherapp/internal/helpers/color_helper.dart';
+import 'package:flutter_weatherapp/internal/helpers/error_helper.dart';
+import 'package:flutter_weatherapp/internal/helpers/text_helper.dart';
 import 'package:flutter_weatherapp/main.dart';
-import 'package:flutter_weatherapp/models/Weather_Model.dart';
+import 'package:flutter_weatherapp/features/weathers/data/models/Weather_Model.dart';
 import 'package:intl/intl.dart';
 
-import 'helpers/function_helper.dart';
+import '../../../../internal/helpers/function_helper.dart';
 // import 'package:flutter/src/widgets/container.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
@@ -121,67 +121,64 @@ class _SecondPageState extends State<SecondPage> {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [Colors.purple, Colors.blue])),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.r),
-                  child: Row(
+            child: Padding(
+              padding: EdgeInsets.all(10.r),
+              child: Row(
+                children: [
+                  Image.asset(
+                    getIcons(
+                      widget.weatherAppModel.weather[0].icon,
+                    ),
+                    height: 150,
+                  ),
+                
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        getIcons(
-                          widget.weatherAppModel.weather[0].icon,
-                        ),
-                        width: 200,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Feels like",
-                                style: textHelper.w700s15
-                                    .copyWith(color: ColorHeler.white),
-                              ),
-                              SizedBox(
-                                width: 5.r,
-                              ),
-                              Text(
-                                getCels(widget.weatherAppModel.main.feelsLike!)
-                                    .toString(),
-                                style: textHelper.w700s15
-                                    .copyWith(color: ColorHeler.white),
-                              ),
-                              Text(
-                                "°",
-                                style: textHelper.w700s15
-                                    .copyWith(color: ColorHeler.white),
-                              ),
-                            ],
+                          Text(
+                            "Feels like",
+                            style: textHelper.w700s15
+                                .copyWith(color: ColorHeler.white),
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                  getCels(widget.weatherAppModel.main.temp!)
-                                      .toString(),
-                                  style: textHelper.w500s75
-                                      .copyWith(color: ColorHeler.white)),
-                              Text("°",
-                                  style: textHelper.w500s75
-                                      .copyWith(color: ColorHeler.white)),
-                            ],
+                          SizedBox(
+                            width: 5.r,
                           ),
                           Text(
-                            widget.weatherAppModel.weather[0].description,
-                            style: textHelper.w500s15
+                            getCels(widget.weatherAppModel.main.feelsLike!)
+                                .toString(),
+                            style: textHelper.w700s15
+                                .copyWith(color: ColorHeler.white),
+                          ),
+                          Text(
+                            "°",
+                            style: textHelper.w700s15
                                 .copyWith(color: ColorHeler.white),
                           ),
                         ],
                       ),
+                      Row(
+                        children: [
+                          Text(
+                              getCels(widget.weatherAppModel.main.temp!)
+                                  .toString(),
+                              style: textHelper.w500s75
+                                  .copyWith(color: ColorHeler.white)),
+                          Text("°",
+                              style: textHelper.w500s75
+                                  .copyWith(color: ColorHeler.white)),
+                        ],
+                      ),
+                      Text(
+                        widget.weatherAppModel.weather[0].description,
+                        style: textHelper.w500s15
+                            .copyWith(color: ColorHeler.white),
+                      ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           SizedBox(
@@ -215,7 +212,7 @@ class _SecondPageState extends State<SecondPage> {
                     children: [
                       Icon(Icons.sunny_snowing),
                       Text(
-                        "07:30",
+                        getTimeFormat(widget.weatherAppModel.sys.sunrise!),
                         style: textHelper.w500s15
                             .copyWith(color: ColorHeler.white),
                       ),
@@ -230,7 +227,7 @@ class _SecondPageState extends State<SecondPage> {
                     children: [
                       Icon(Icons.lightbulb_sharp),
                       Text(
-                        "18:40",
+                        getTimeFormat(widget.weatherAppModel.sys.sunset!),
                         style: textHelper.w500s15
                             .copyWith(color: ColorHeler.white),
                       ),
@@ -358,13 +355,22 @@ class _SecondPageState extends State<SecondPage> {
               ),
             ),
           ),
-          // SizedBox(
-          //   width: 250.r,
-          //   child: Text(
-          //     "data provided from https://openweathermap.org",
-          //     style: TextStyle(color: Colors.amber.shade900),
-          //   ),
-          // )
+          SizedBox(
+            height: 10.r,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "data provided from",
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                " https://openweathermap.org",
+                style: TextStyle(color: Colors.amber.shade900),
+              ),
+            ],
+          ),
         ]),
       ),
     ));

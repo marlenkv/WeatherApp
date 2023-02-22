@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_weatherapp/cubit/weather_app_cubit.dart';
-import 'package:flutter_weatherapp/helpers/color_helper.dart';
-import 'package:flutter_weatherapp/helpers/text_helper.dart';
-import 'package:flutter_weatherapp/main.dart';
-import 'package:flutter_weatherapp/models/Weather_Model.dart';
 
+import 'package:flutter_weatherapp/internal/helpers/color_helper.dart';
+import 'package:flutter_weatherapp/internal/helpers/text_helper.dart';
+import 'package:flutter_weatherapp/main.dart';
+import 'package:flutter_weatherapp/features/weathers/data/models/Weather_Model.dart';
+
+import '../logic/weather_cubit/weather_app_cubit.dart';
 import 'secondScreen.dart';
-import 'helpers/error_helper.dart';
+import '../../../../internal/helpers/error_helper.dart';
 
 class FirstScreen extends StatefulWidget {
   FirstScreen({
@@ -71,7 +72,10 @@ class _FirstScreenState extends State<FirstScreen> {
                           colors: [Colors.purple, Colors.blue])),
                   child: IconButton(
                       onPressed: () {
-                        _appCubit.getWeather(controller.text);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => FirstScreen())));
                       },
                       icon: Icon(
                         Icons.repeat,
@@ -115,7 +119,9 @@ class _FirstScreenState extends State<FirstScreen> {
                         child: IconButton(
                             onPressed: () {
                               if (controller.text.isNotEmpty) {
-                                _appCubit.getWeather(controller.text);
+                                _appCubit.getWeather(
+                                  city: controller.text,
+                                );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text("Зопалните поле")));

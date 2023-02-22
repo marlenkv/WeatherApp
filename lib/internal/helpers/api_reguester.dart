@@ -98,6 +98,7 @@ class APIRequester {
     Map<String, dynamic>? dataParam,
     Map<String, dynamic>? headers,
     Options? options,
+    required Map<String, String> queryParameters,
   }) async {
     try {
       final dio = _init();
